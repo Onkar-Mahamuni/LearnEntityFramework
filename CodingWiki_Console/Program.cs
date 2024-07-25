@@ -1,0 +1,41 @@
+﻿// See https://aka.ms/new-console-template for more information
+using CodingWiki_DataAccess.Data;
+using CodingWiki_Model.Models;
+using Microsoft.EntityFrameworkCore;
+
+Console.WriteLine("Hello, World!");
+
+//using(ApplicationDbContext context = new())
+//{
+//    context.Database.EnsureCreated();
+
+//    if (context.Database.GetPendingMigrations().Any())
+//    {
+//        context.Database.Migrate(); 
+//    }
+//}
+
+AddBook();
+
+GetAllBooks();
+
+void AddBook()
+{
+    Book book = new() { Title = "New EF Core Book", ISBN = "1231231212", Price = 10.93m, Publisher_Id = 1 };
+    var context = new ApplicationDbContext();
+    context.Books.Add(book);
+
+    context.SaveChanges(); // Book will only be added after executing this method
+}
+
+void GetAllBooks()
+{
+    using var context = new ApplicationDbContext();
+    
+    var books = context.Books.ToList();
+
+    foreach (var book in books)
+    {
+        Console.WriteLine(book.Title+ " - "+book.ISBN);
+    }
+}
